@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('image.webp');
+    background-size: cover;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    min-height: 100vh; /* Para asegurarse de que ocupe toda la pantalla */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pantalla {
+    display: none;
+    background: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.visible {
+    display: block;
+}
+
+input[type="text"] {
+    margin: 10px;
+    padding: 10px;
+    width: 200px;
+}
+
+input[type="range"] {
+    width: 300px; /* Ancho de la barra */
+    height: 8px; /* Altura de la barra */
+    background: #ddd; /* Color de fondo de la barra */
+    border-radius: 5px; /* Bordes redondeados para la barra */
+    outline: none; /* Quitar el contorno al enfocar */
+    margin: 0; /* Eliminar margen para que empiece justo desde el borde */
+    padding: 0; /* Eliminar padding para que empiece justo desde el borde */
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    width: 30px; /* Ancho de la manivela */
+    height: 30px; /* Alto de la manivela */
+    background: #4CAF50; /* Color de la manivela */
+    border-radius: 10px; /* Bordes redondeados */
+    cursor: pointer; /* Cambiar el cursor al pasar por encima */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Sombra para darle un efecto 3D */
+    margin-top: -11px; /* Mover el thumb para que se centre verticalmente */
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 30px; /* Ancho de la manivela */
+    height: 30px; /* Alto de la manivela */
+    background: #4CAF50; /* Color de la manivela */
+    border-radius: 10px; /* Bordes redondeados */
+    cursor: pointer; /* Cambiar el cursor al pasar por encima */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Sombra para darle un efecto 3D */
+    margin-top: -11px; /* Mover el thumb para que se centre verticalmente */
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    background-color: white; /* Fondo blanco para los botones de atrás y siguiente */
+    color: black; /* Color del texto de los botones */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados para el botón */
+    transition: background-color 0.3s; /* Transición suave para el cambio de color */
+}
+
+button:hover {
+    background-color: #f0f0f0; /* Color gris claro al pasar el ratón */
+}
+
+.calificacion-container {
+    display: flex;
+    flex-direction: column; /* Para apilar las calificaciones */
+    align-items: center; /* Centrar los elementos */
+}
+
+.botones {
+    display: flex;
+    justify-content: center; /* Centra los botones */
+    gap: 20px; /* Espacio entre botones */
+}

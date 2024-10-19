@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batalla de MCs</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div id="pantalla-inicial" class="pantalla visible">
+        <h1>FMS PAPIS TEMPORADA 4</h1>
+        <input type="text" id="mc1-nombre" placeholder="Nombre MC1" />
+        <input type="text" id="mc2-nombre" placeholder="Nombre MC2" />
+        <button id="comenzar">Comenzar Batalla</button>
+    </div>
+
+    <div id="pantalla-rondas" class="pantalla">
+        <h2 id="ronda-titulo"></h2>
+        <div class="calificacion-container">
+            <div>
+                <p>Calificación MC1: <span id="mc1-nombre-display"></span></p>
+                <input type="range" id="mc1-calificacion" min="0" max="10" value="0">
+                <span id="mc1-score">0</span>
+            </div>
+            <div>
+                <p>Calificación MC2: <span id="mc2-nombre-display"></span></p>
+                <input type="range" id="mc2-calificacion" min="0" max="10" value="0">
+                <span id="mc2-score">0</span>
+            </div>
+        </div>
+
+        <div class="botones">
+            <button id="atras">Atrás</button>
+            <button id="siguiente">Siguiente</button>
+        </div>
+    </div>
+
+    <div id="pantalla-final" class="pantalla">
+        <h2>Resultados Finales</h2>
+        <p id="mc1-nombre-final"></p>
+        <p id="mc1-total"></p>
+        <p id="mc2-nombre-final"></p>
+        <p id="mc2-total"></p>
+        <p id="ganador"></p>
+        
+        <button id="descargar-excel">Descargar Resultados en Excel</button>
+        <button id="replica">Réplica</button>
+        <button id="reiniciar">Nueva votación</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
