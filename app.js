@@ -41,6 +41,7 @@ document.getElementById("siguiente").addEventListener("click", function() {
             mostrarResultados();
         }
     } else {
+        // Reiniciar puntuaciones para la réplica
         puntajesReplica.mc1 = parseInt(document.getElementById("mc1-calificacion").value);
         puntajesReplica.mc2 = parseInt(document.getElementById("mc2-calificacion").value);
         mostrarResultados();
@@ -65,7 +66,7 @@ document.getElementById("reiniciar").addEventListener("click", function() {
 
 document.getElementById("replica").addEventListener("click", function() {
     enReplica = true;
-    rondaActual = "Réplica";  // Etiqueta especial para la réplica
+    rondaActual = -1;  // Usamos -1 para indicar que estamos en la réplica
     document.getElementById("pantalla-final").classList.remove("visible");
     document.getElementById("pantalla-rondas").classList.add("visible");
     actualizarRonda();
@@ -84,7 +85,11 @@ function generarExcel() {
         ["MINUTO 2", puntajes.mc1[2], puntajes.mc2[2]],
         ["DELUXE", puntajes.mc1[3], puntajes.mc2[3]],
         ["4X4", puntajes.mc1[4], puntajes.mc2[4]],
-        ["FINAL", puntajes.mc1.reduce((a, b) => a + b, 0), puntajes.mc2.reduce((a, b) => a + b, 0)]
+        ["FINAL", puntajes.mc1.reduce((a, b) => a + b, 0), puntajes.mc2.reduce((a, b) => a + b, 0)],
+        [],  // Línea en blanco para separación
+        ["RESULTADOS DE LA RÉPLICA"],  // Título para la tabla de réplica
+        ["MC1", "Puntaje", "MC2", "Puntaje"],  // Encabezados de la tabla de réplica
+        [mc1Nombre, puntajesReplica.mc1, mc2Nombre, puntajesReplica.mc2]  // Resultados de la réplica
     ];
 
     // Crea una hoja de cálculo
@@ -102,7 +107,7 @@ function generarExcel() {
 document.getElementById("descargar-excel").addEventListener("click", generarExcel);
 
 function actualizarRonda() {
-    if (rondaActual < rondas.length) {
+    if (rondaActual >= 0 && rondaActual < rondas.length) {
         document.getElementById("ronda-titulo").textContent = rondas[rondaActual];
         document.getElementById("mc1-calificacion").value = 0;
         document.getElementById("mc2-calificacion").value = 0;
@@ -115,8 +120,12 @@ function actualizarRonda() {
             document.getElementById("mc1-calificacion").max = 4;
             document.getElementById("mc2-calificacion").max = 4;
         }
-    } else {
+    } else if (rondaActual === -1) { // Caso de la réplica
         document.getElementById("ronda-titulo").textContent = "Réplica";
+        document.getElementById("mc1-calificacion").value = 0; // Reiniciar a 0
+        document.getElementById("mc2-calificacion").value = 0; // Reiniciar a 0
+        document.getElementById("mc1-score").textContent = "0"; // Reiniciar a 0
+        document.getElementById("mc2-score").textContent = "0"; // Reiniciar a 0
         document.getElementById("mc1-calificacion").max = 10;
         document.getElementById("mc2-calificacion").max = 10;
     }
