@@ -122,12 +122,10 @@ function actualizarRonda() {
         }
     } else if (rondaActual === -1) { // Caso de la réplica
         document.getElementById("ronda-titulo").textContent = "Réplica";
-        document.getElementById("mc1-calificacion").value = 0; // Reiniciar a 0
-        document.getElementById("mc2-calificacion").value = 0; // Reiniciar a 0
-        document.getElementById("mc1-score").textContent = "0"; // Reiniciar a 0
-        document.getElementById("mc2-score").textContent = "0"; // Reiniciar a 0
-        document.getElementById("mc1-calificacion").max = 10;
-        document.getElementById("mc2-calificacion").max = 10;
+        document.getElementById("mc1-calificacion").value = 0;
+        document.getElementById("mc2-calificacion").value = 0;
+        document.getElementById("mc1-score").textContent = "0";
+        document.getElementById("mc2-score").textContent = "0";
     }
 }
 
@@ -138,19 +136,14 @@ function mostrarResultados() {
     const mc1Nombre = document.getElementById("mc1-nombre-display").textContent;
     const mc2Nombre = document.getElementById("mc2-nombre-display").textContent;
 
+    const mc1Total = puntajes.mc1.reduce((a, b) => a + b, 0) + (enReplica ? puntajesReplica.mc1 : 0);
+    const mc2Total = puntajes.mc2.reduce((a, b) => a + b, 0) + (enReplica ? puntajesReplica.mc2 : 0);
+
     document.getElementById("mc1-nombre-final").textContent = mc1Nombre;
-    document.getElementById("mc1-total").textContent = "Total: " + puntajes.mc1.reduce((a, b) => a + b, 0);
+    document.getElementById("mc1-total").textContent = `Total: ${mc1Total}`;
     document.getElementById("mc2-nombre-final").textContent = mc2Nombre;
-    document.getElementById("mc2-total").textContent = "Total: " + puntajes.mc2.reduce((a, b) => a + b, 0);
+    document.getElementById("mc2-total").textContent = `Total: ${mc2Total}`;
 
-    const totalMC1 = puntajes.mc1.reduce((a, b) => a + b, 0);
-    const totalMC2 = puntajes.mc2.reduce((a, b) => a + b, 0);
-
-    if (totalMC1 > totalMC2) {
-        document.getElementById("ganador").textContent = mc1Nombre + " gana la batalla directa";
-    } else if (totalMC1 < totalMC2) {
-        document.getElementById("ganador").textContent = mc2Nombre + " gana la batalla directa";
-    } else {
-        document.getElementById("ganador").textContent = "¡Tenemos una réplica!";
-    }
+    const ganador = mc1Total > mc2Total ? mc1Nombre : mc2Nombre;
+    document.getElementById("ganador").textContent = `Ganador: ${mc1Total === mc2Total ? "Empate" : ganador}`;
 }
