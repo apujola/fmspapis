@@ -121,17 +121,7 @@ function generarExcel() {
 }
 
 // Añadir el botón de descargar Excel en la pantalla final
-document.getElementById("descargar-excel").addEventListener("click", function() {
-    const workbook = XLSX.utils.book_new();
-    const worksheetData = [
-        ["MC", "Calificación Total"],
-        [document.getElementById("mc1-nombre-final").textContent, document.getElementById("mc1-total").textContent],
-        [document.getElementById("mc2-nombre-final").textContent, document.getElementById("mc2-total").textContent]
-    ];
-    const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Resultados");
-    XLSX.writeFile(workbook, "Resultados_Batalla_MCs.xlsx");
-});
+document.getElementById("descargar-excel").addEventListener("click", generarExcel);
 
 function actualizarRonda() {
     if (rondaActual >= 0 && rondaActual < rondas.length) {
