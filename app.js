@@ -72,39 +72,66 @@ document.getElementById("replica").addEventListener("click", function() {
     actualizarRonda();
 });
 
-// Función para generar el archivo Excel
+// Función para generar el archivo Excel usando una plantilla preformateada
 function generarExcel() {
     const mc1Nombre = document.getElementById("mc1-nombre-display").textContent;
     const mc2Nombre = document.getElementById("mc2-nombre-display").textContent;
 
-    const datos = [
-        ["BATALLA"],
-        ["RONDA", mc1Nombre, mc2Nombre],
-        ["RANDOM MODE", puntajes.mc1[0], puntajes.mc2[0]],
-        ["MINUTO 1", puntajes.mc1[1], puntajes.mc2[1]],
-        ["MINUTO 2", puntajes.mc1[2], puntajes.mc2[2]],
-        ["DELUXE", puntajes.mc1[3], puntajes.mc2[3]],
-        ["4X4", puntajes.mc1[4], puntajes.mc2[4]],
-        ["FINAL", puntajes.mc1.reduce((a, b) => a + b, 0), puntajes.mc2.reduce((a, b) => a + b, 0)],
-        [],  // Línea en blanco para separación
-        ["RESULTADOS DE LA RÉPLICA"],  // Título para la tabla de réplica
-        ["MC1", "Puntaje", "MC2", "Puntaje"],  // Encabezados de la tabla de réplica
-        [mc1Nombre, puntajesReplica.mc1, mc2Nombre, puntajesReplica.mc2]  // Resultados de la réplica
-    ];
+    // Cargar la plantilla preformateada
+    fetch("plantilla.xlsx")
+        .then(response => response.arrayBuffer())
+        .then(data => {
+            // Leer el archivo Excel de la plantilla
+            const libro = XLSX.read(data, { type: "array" });
+            const hoja = libro.Sheets[libro.SheetNames[0]];
 
-    // Crea una hoja de cálculo
-    const hoja = XLSX.utils.aoa_to_sheet(datos);
+            // Llenar los datos en las celdas correspondientes
+            hoja["F3"].v = mc1Nombre;
+            hoja["G3"].v = mc2Nombre;
 
-    // Crea un nuevo libro
-    const libro = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(libro, hoja, "Resultados");
+            hoja["F4"].v = puntajes.mc1[0];
+            hoja["G4"].v = puntajes.mc2[0];
+            hoja["F5"].v = puntajes.mc1[1];
+            hoja["G5"].v = puntajes.mc2[1];
+            hoja["F6"].v = puntajes.mc1[2];
+            hoja["G6"].v = puntajes.mc2[2];
+            hoja["F7"].v = puntajes.mc1[3];
+            hoja["G7"].v = puntajes.mc2[3];
+            hoja["F8"].v = puntajes.mc1[4];
+            hoja["G8"].v = puntajes.mc2[4];
 
-    // Exporta el archivo Excel
-    XLSX.writeFile(libro, "resultados_batalla.xlsx");
+            // Calcular y llenar los puntajes finales
+            const mc1Total = puntajes.mc1.reduce((a, b) => a + b, 0) + (enReplica ? puntajesReplica.mc1 : 0);
+            const mc2Total = puntajes.mc2.reduce((a, b) => a + b, 0) + (enReplica ? puntajesReplica.mc2 : 0);
+            hoja["F9"].v = mc1Total;
+            hoja["G9"].v = mc2Total;
+
+            // Llenar la sección de resultados de la réplica si aplica
+            hoja["F12"].v = mc1Nombre;
+            hoja["G12"].v = puntajesReplica.mc1;
+            hoja["H12"].v = mc2Nombre;
+            hoja["I12"].v = puntajesReplica.mc2;
+
+            // Exportar el archivo modificado como Excel
+            XLSX.writeFile(libro, "resultados_batalla.xlsx");
+        })
+        .catch(error => {
+            console.error("Error al cargar la plantilla:", error);
+        });
 }
 
 // Añadir el botón de descargar Excel en la pantalla final
-document.getElementById("descargar-excel").addEventListener("click", generarExcel);
+document.getElementById("descargar-excel").addEventListener("click", function() {
+    const workbook = XLSX.utils.book_new();
+    const worksheetData = [
+        ["MC", "Calificación Total"],
+        [document.getElementById("mc1-nombre-final").textContent, document.getElementById("mc1-total").textContent],
+        [document.getElementById("mc2-nombre-final").textContent, document.getElementById("mc2-total").textContent]
+    ];
+    const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Resultados");
+    XLSX.writeFile(workbook, "Resultados_Batalla_MCs.xlsx");
+});
 
 function actualizarRonda() {
     if (rondaActual >= 0 && rondaActual < rondas.length) {
